@@ -14,5 +14,12 @@ ThemeHistory.prototype.undo = function() {
   return JSON.parse(JSON.stringify(this.undoHistory[this.undoHistory.length - 1]));
 }
 
+Object.defineProperty(ThemeHistory.prototype, "length", {
+  enumerable: true,
+  get: function() {
+    return this.undoHistory.length;
+  },
+});
+
 return ThemeHistory;
 })();
