@@ -2,6 +2,8 @@ window.Theme = (function(window) {
 
 /* Generic Theme */
 function Theme(items) {
+  this.history = new window.ThemeHistory();
+
   if (Array.isArray(items))
     this.items = items.reduce(function(acc, item) {
       acc[item] = {color: "#000000"};
@@ -87,6 +89,15 @@ Theme.prototype.rippleToLinkedElements = function(itemName) {
     var transformedColor = converter.toRgb.apply(null, transformedComponents);
     this.setItemColor(element, colorComponentConversions.rgb.toCssString.apply(null, transformedColor), false);
   }
+}
+
+Theme.prototype.commit = function() {
+  this.history.commit(this.items);
+}
+
+Theme.prototype.undo = function() {
+  var oldItems = this.history.undo();
+  this.items = oldItems;
 }
 
 function toHexColor(colorNum) {

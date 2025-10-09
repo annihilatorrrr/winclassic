@@ -72,7 +72,7 @@ function WinClassicTheme() {
     this.updateFromStylesheet(itemName);
     picker.value = this.getItemColor(itemName);
     picker.oninput = this.onColorChange.bind(this);
-    picker.onchange = this.displayExport.bind(this);
+    picker.onchange = this.onColorCommit.bind(this);
   }
 
   document.getElementById("import-action").onclick = function(e) {
@@ -91,6 +91,7 @@ function WinClassicTheme() {
   this.displayExport();
   updateLinkedElements();
 
+  this.commit();
   return this;
 }
 
@@ -109,6 +110,11 @@ WinClassicTheme.prototype.onColorChange = function(e) {
   this.setItemColor(name, color);
   this.updateStylesheet();
   this.resetPickers();
+}
+
+WinClassicTheme.prototype.onColorCommit = function(e) {
+  this.displayExport();
+  this.commit();
 }
 
 WinClassicTheme.prototype.exportToIni = function() {
@@ -141,6 +147,7 @@ WinClassicTheme.prototype.importIniSection = function(content) {
     this.updateStylesheet(item);
   }
   this.resetPickers();
+  this.commit();
   this.displayExport();
 }
 
