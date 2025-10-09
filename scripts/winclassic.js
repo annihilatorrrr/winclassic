@@ -66,9 +66,12 @@ function WinClassicTheme() {
   this.linkElementsToggle = document.getElementById("link-elements");
   this.useGradientsToggle = document.getElementById("use-gradients");
   this.undoButton = document.getElementById("undo-button");
+  this.redoButton = document.getElementById("redo-button");
 
   this.undoButton.onclick = this.undo.bind(this);
   this.undoButton.disabled = true;
+  this.redoButton.onclick = this.redo.bind(this);
+  this.redoButton.disabled = true;
 
   for (var i = 0; i < this.pickers.length; i++) {
     var picker = this.pickers[i];
@@ -177,7 +180,8 @@ WinClassicTheme.prototype.enableLinkedElements = function(types) {
 
 WinClassicTheme.prototype.commit = function() {
   Theme.prototype.commit.call(this);
-  this.undoButton.disabled = this.history.length <= 1;
+  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
 WinClassicTheme.prototype.undo = function() {
@@ -185,7 +189,17 @@ WinClassicTheme.prototype.undo = function() {
   this.updateStylesheet();
   this.resetPickers();
   this.displayExport();
-  this.undoButton.disabled = this.history.length <= 1;
+  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.redoButton.disabled = this.history.redoLength <= 0;
+}
+
+WinClassicTheme.prototype.redo = function() {
+  Theme.prototype.redo.call(this);
+  this.updateStylesheet();
+  this.resetPickers();
+  this.displayExport();
+  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
 return WinClassicTheme;

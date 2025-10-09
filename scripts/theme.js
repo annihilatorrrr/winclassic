@@ -96,8 +96,11 @@ Theme.prototype.commit = function() {
 }
 
 Theme.prototype.undo = function() {
-  var oldItems = this.history.undo();
-  this.items = oldItems;
+  this.items = this.history.undo();
+}
+
+Theme.prototype.redo = function() {
+  this.items = this.history.redo();
 }
 
 function toHexColor(colorNum) {
