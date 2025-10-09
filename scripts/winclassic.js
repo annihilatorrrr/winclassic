@@ -180,7 +180,7 @@ WinClassicTheme.prototype.enableLinkedElements = function(types) {
 
 WinClassicTheme.prototype.commit = function() {
   Theme.prototype.commit.call(this);
-  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.undoButton.disabled = this.history.undoLength <= 0;
   this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
@@ -189,7 +189,7 @@ WinClassicTheme.prototype.undo = function() {
   this.updateStylesheet();
   this.resetPickers();
   this.displayExport();
-  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.undoButton.disabled = this.history.undoLength <= 0;
   this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
@@ -198,7 +198,7 @@ WinClassicTheme.prototype.redo = function() {
   this.updateStylesheet();
   this.resetPickers();
   this.displayExport();
-  this.undoButton.disabled = this.history.undoLength <= 1;
+  this.undoButton.disabled = this.history.undoLength <= 0;
   this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
