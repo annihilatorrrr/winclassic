@@ -65,6 +65,9 @@ function WinClassicTheme() {
   this.exportDestination = document.getElementById("export");
   this.linkElementsToggle = document.getElementById("link-elements");
   this.useGradientsToggle = document.getElementById("use-gradients");
+  this.undoButton = document.getElementById("undo-button");
+
+  this.undoButton.onclick = this.undo.bind(this);
 
   for (var i = 0; i < this.pickers.length; i++) {
     var picker = this.pickers[i];
@@ -169,6 +172,13 @@ WinClassicTheme.prototype.enableLinkedElements = function(types) {
   }
 
   this.linkedElements = enabledElementLinks;
+}
+
+WinClassicTheme.prototype.undo = function() {
+  Theme.prototype.undo.call(this);
+  this.updateStylesheet();
+  this.resetPickers();
+  this.displayExport();
 }
 
 return WinClassicTheme;
