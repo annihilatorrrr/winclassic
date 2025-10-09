@@ -6,11 +6,12 @@ function ThemeHistory() {
 }
 
 ThemeHistory.prototype.commit = function(item) {
-  this.undoHistory.push(item);
+  this.undoHistory.push(JSON.parse(JSON.stringify(item)));
 }
 
 ThemeHistory.prototype.undo = function() {
-  return this.undoHistory.pop();
+  this.undoHistory.pop();
+  return JSON.parse(JSON.stringify(this.undoHistory[this.undoHistory.length - 1]));
 }
 
 return ThemeHistory;
