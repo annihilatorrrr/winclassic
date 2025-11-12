@@ -119,7 +119,7 @@ WinClassicTheme.prototype.onColorChange = function(e) {
   this.resetPickers();
 }
 
-WinClassicTheme.prototype.onColorCommit = function(e) {
+WinClassicTheme.prototype.onColorCommit = function() {
   this.displayExport();
   this.commit();
 }

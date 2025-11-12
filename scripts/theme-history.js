@@ -22,7 +22,7 @@ ThemeHistory.prototype.undo = function() {
 }
 
 ThemeHistory.prototype.redo = function() {
-  this.undoHistory.push(this.current)
+  this.undoHistory.push(this.current);
   this.current = this.redoHistory.pop();
   return JSON.parse(JSON.stringify(this.current));
 }
