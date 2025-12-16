@@ -86,17 +86,28 @@ function WinClassicTheme() {
     this.importIniSection(importSource.value);
   }.bind(this);
 
-  var updateLinkedElements =
-    this.linkElementsToggle.onchange =
-    this.useGradientsToggle.onchange = function() {
-      this.enableLinkedElements({
-        button: this.linkElementsToggle.checked,
-        titlebar: !this.useGradientsToggle.checked,
-      });
-    }.bind(this);
+  this.linkElementsToggle.onchange = function() {
+    this.updateLinkedElements();
+
+    // trigger a cascade
+    this.setItemColor("ButtonFace", this.items["ButtonFace"].color);
+    this.updateStylesheet();
+    this.resetPickers();
+    this.commit();
+  }.bind(this);
+  this.useGradientsToggle.onchange = function() {
+    this.updateLinkedElements();
+
+    // trigger a cascade
+    this.setItemColor("ActiveTitle", this.items["ActiveTitle"].color);
+    this.setItemColor("InactiveTitle", this.items["InactiveTitle"].color);
+    this.updateStylesheet();
+    this.resetPickers();
+    this.commit();
+  }.bind(this);
 
   this.displayExport();
-  updateLinkedElements();
+  this.updateLinkedElements();
 
   this.commit();
   return this;
@@ -178,14 +189,33 @@ WinClassicTheme.prototype.enableLinkedElements = function(types) {
   this.linkedElements = enabledElementLinks;
 }
 
+WinClassicTheme.prototype.updateLinkedElements = function() {
+  this.enableLinkedElements({
+    button: this.linkElementsToggle.checked,
+    titlebar: !this.useGradientsToggle.checked,
+  });
+}
+
 WinClassicTheme.prototype.commit = function() {
-  Theme.prototype.commit.call(this);
+  this.history.commit({
+    linkedElements: {
+      button: this.linkElementsToggle.checked,
+      titlebar: !this.useGradientsToggle.checked,
+    },
+    items: this.items,
+  });
   this.undoButton.disabled = this.history.undoLength <= 0;
   this.redoButton.disabled = this.history.redoLength <= 0;
 }
 
 WinClassicTheme.prototype.undo = function() {
-  Theme.prototype.undo.call(this);
+  var state = this.history.undo();
+
+  this.enableLinkedElements(state.linkedElements);
+  this.linkElementsToggle.checked = state.linkedElements.button;
+  this.useGradientsToggle.checked = !state.linkedElements.titlebar;
+
+  this.items = state.items;
   this.updateStylesheet();
   this.resetPickers();
   this.displayExport();
@@ -194,7 +224,13 @@ WinClassicTheme.prototype.undo = function() {
 }
 
 WinClassicTheme.prototype.redo = function() {
-  Theme.prototype.redo.call(this);
+  var state = this.history.redo();
+
+  this.enableLinkedElements(state.linkedElements);
+  this.linkElementsToggle.checked = state.linkedElements.button;
+  this.useGradientsToggle.checked = !state.linkedElements.titlebar;
+
+  this.items = state.items;
   this.updateStylesheet();
   this.resetPickers();
   this.displayExport();
