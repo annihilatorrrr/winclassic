@@ -189,14 +189,19 @@
     <div id="ini-code">
       <h2><code>[Control Panel\Colors]</code></h2>
 
-      <fieldset>
+      <fieldset class="ini-container">
         <legend>Export</legend>
+        <div class="actions">
+          <label>Name: <input id="theme-name" name="theme-name" value="My Theme" /></label><button id="download-theme-action">Download .theme</button>
+        </div>
         <textarea id="export" rows="31" cols="40" readonly="readonly"></textarea>
       </fieldset>
-      <fieldset>
+      <fieldset class="ini-container">
         <legend>Import</legend>
+        <div class="actions">
+          <button id="import-action">Import</button>
+        </div>
         <textarea id="import" rows="31" cols="40"></textarea>
-        <button id="import-action">Import</button>
       </fieldset>
     </div>
   </main>
